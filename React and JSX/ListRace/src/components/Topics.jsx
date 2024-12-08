@@ -1,6 +1,5 @@
 export default function Topics() {
     return (
-
         <section id="list-topics" className="list-topics">
             <div className="container">
                 <div className="list-topics-content">
