@@ -4,31 +4,31 @@ import TableItem from "./TableItem";
 export default function Main() {
     const [todos, setTodos] = useState([]);
 
-    // useEffect(() => {
-    //     fetch('http://localhost:3030/jsonstore/todos')
-    //         .then(res => res.json())
-    //         .then(result => {
-    //             const data = Object.values(result);
-    //             setTodos(data);
-    //         });
-    // }, []);
-
-    // TO USE JAVA REST API YOU NEED TO CHANGE ALL : "isCompleted" to "completed"
-    
     useEffect(() => {
-        fetch('http://localhost:8080/java/api/todos')
+        fetch('http://localhost:3030/jsonstore/todos')
             .then(res => res.json())
             .then(result => {
-                console.log(result)
-                setTodos(result);
-           })
-            .catch(error => console.error('Error fetching todos:', error));
+                const data = Object.values(result);
+                setTodos(data);
+            });
     }, []);
+
+    //JAVA REST API
+
+    // useEffect(() => {
+    //     fetch('http://localhost:8080/java/api/todos')
+    //         .then(res => res.json())
+    //         .then(result => {
+    //             console.log(result)
+    //             setTodos(result);
+    //        })
+    //         .catch(error => console.error('Error fetching todos:', error));
+    // }, []);
 
     const todoItemChangeStatusHandler = (todoId) => {
         console.log(todoId);
         setTodos(oldTodos => oldTodos.map(todo => todo._id === todoId
-            ? { ...todo, isCompleted: !todo.isCompleted            }
+            ? { ...todo, isCompleted: !todo.isCompleted }
             : todo))
     };
 
