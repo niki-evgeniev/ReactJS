@@ -23,7 +23,16 @@ export default function UserSection(props) {
         })();
     }, []);
 
-    const AddUserClickHandler = () => {
+    const addUserClickHandler = () => {
+        setShowAddUser(true);
+    }
+
+    const addUserCloseHandler = () => {
+        setShowAddUser(false);
+    }
+
+    const addUserSaveHandler = (userData) => {
+        console.log(userData);
 
     }
 
@@ -32,11 +41,14 @@ export default function UserSection(props) {
             <section className="card users-container">
                 <Search />
 
-                <UserList users={users}/>
+                <UserList users={users} />
 
-                {showAddUser && <UserAdd />}
+                {showAddUser && <UserAdd
+                    onClose={addUserCloseHandler}
+                    onSave={addUserSaveHandler}
+                />}
 
-                <button className="btn-add btn" onClick={AddUserClickHandler}>Add new user</button>
+                <button className="btn-add btn" onClick={addUserClickHandler}>Add new user</button>
 
                 <Pagination />
             </section>
