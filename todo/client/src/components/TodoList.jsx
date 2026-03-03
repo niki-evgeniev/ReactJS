@@ -1,46 +1,40 @@
 import { useEffect, useState } from "react";
-import TableItem from "./TableItem";
+import TodoListItem from "./TodoListItem";
 
-export default function Main() {
+export default function TodoList() {
+    const url = 'http://localhost:3030/jsonstore/todos';
     const [todos, setTodos] = useState([]);
 
-    // useEffect(() => {
-    //     fetch('http://localhost:3030/jsonstore/todos')
-    //         .then(res => res.json())
-    //         .then(result => {
-    //             const data = Object.values(result);
-    //             setTodos(data);
-    //         });
-    // }, []);
-
-    //JAVA REST API
-
     useEffect(() => {
-        fetch('http://localhost:8080/java/api/todos')
+        fetch(url)
             .then(res => res.json())
-            .then(result => {
-                console.log(result)
+            .then(data => {
+                const result = Object.values(data);
                 setTodos(result);
             })
-            .catch(error => console.error('Error fetching todos:', error));
+            .catch(err => {
+                console.log(err.message);
+            });
     }, []);
-
-    const todoItemChangeStatusHandler = (todoId) => {
-        console.log(todoId);
-        setTodos(oldTodos => oldTodos.map(todo => todo._id === todoId
-            ? { ...todo, isCompleted: !todo.isCompleted }
-            : todo))
-    };
-
     return (
-        <main className="main">
+        <>
             <section className="todo-list-container">
                 <h1>Todo List</h1>
+
                 <div className="add-btn-container">
                     <button className="btn">+ Add new Todo</button>
                 </div>
+
                 <div className="table-wrapper">
-                    {/* spinner */}
+
+                    {/* <!-- Loading spinner - show the load spinner when fetching the data from the server--> */}
+                    {/* <div className="loading-container">
+              <div className="loading-spinner">
+                <span className="loading-spinner-text">Loading</span>
+              </div>
+            </div> */}
+
+                    {/* <!-- Todo list table --> */}
                     <table className="table">
                         <thead>
                             <tr>
@@ -50,19 +44,18 @@ export default function Main() {
                             </tr>
                         </thead>
                         <tbody>
-                            {todos
-                                .map
-                                (todo => <TableItem
+                            {/* <!-- Todo item --> */}
+                            {todos.map(todo =>
+                                <TodoListItem
                                     key={todo._id}
-                                    id={todo._id}
                                     text={todo.text}
                                     isCompleted={todo.isCompleted}
-                                    onStatusChange={todoItemChangeStatusHandler}
-                                />)}
+                                />
+                            )}
                         </tbody>
                     </table>
                 </div>
             </section>
-        </main>
+        </>
     );
 }
